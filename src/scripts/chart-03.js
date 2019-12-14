@@ -18,7 +18,7 @@ const colorScale = d3
   .scaleLinear()
   .domain([9, 100])
   .range(['#fee0d2', '#de2d26'])
-const projection = d3.geoMercator().scale(150)
+const projection = d3.geoMercator().scale(140)
 // out geoPath needs a PROJECTION variable
 const path = d3.geoPath().projection(projection)
 const tip = d3
