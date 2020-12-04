@@ -238,3 +238,5 @@ body {
       svg {
           margin: 0;
       }
+      
+      .state, .state-label { pointer-events:none;}
