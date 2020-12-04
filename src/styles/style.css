@@ -238,5 +238,10 @@ body {
       svg {
           margin: 0;
       }
+<<<<<<< HEAD
       
       .state, .state-label { pointer-events:none;}
+=======
+
+.state, .state-label {pointer-events:none;}
+>>>>>>> d8e5bc71be6965eca5b7de9fb3db5f2b0731647b
