@@ -26,7 +26,7 @@ const colorScale = d3
 
 const tip = d3
   .tip()
-  .attr('class', 'd3-tip d3-tip-scrolly')
+  .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function (d) {
     return `${d.city}, ${d.state_id}
@@ -38,9 +38,9 @@ console.log(tip)
 
 svg.call(tip)
 
-let toolTipElement = d3.select(".d3-tip-scrolly").remove()
+// let toolTipElement = d3.select(".d3-tip-scrolly").remove()
 
-d3.select(".scrollytelling").append(d => toolTipElement.node())
+// d3.select(".scrollytelling").append(d => toolTipElement.node())
 
 Promise.all([
   d3.json(require('/data/us_states.json')),
@@ -102,6 +102,7 @@ function ready([json, datapoints]) {
         return '#BEBEBE'
       }
     })
+    .style('opacity', 0.5) 
 
   svg
     .selectAll('.state-label')
@@ -127,10 +128,11 @@ function ready([json, datapoints]) {
       return `translate(${coords})`
     })
     .style('fill', 'black')
+    // tooltips
     .on('mouseover', function (d) {
-      tip.show.call(this, d)
+      tip.show.call(d, this)
       console.log(d3.event)
-      d3.select('.d3-tip-scrolly').style('top', d3.event.pageY + 10 + 'px')
+      d3.select(this)
     })
     .on('mouseout', tip.hide)
 
