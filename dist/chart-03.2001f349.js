@@ -44204,7 +44204,7 @@ var height = 500 - margin.top - margin.bottom;
 var width = 800 - margin.left - margin.right;
 var svg = d3.select('#chart-3').append('svg').attr('height', height + margin.top + margin.bottom).attr('width', width + margin.left + margin.right).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 var colorScale = d3.scaleLinear().domain([9, 100]).range(['#fee0d2', '#de2d26']);
-var projection = d3.geoMercator().scale(150); // out geoPath needs a PROJECTION variable
+var projection = d3.geoMercator().scale(140); // out geoPath needs a PROJECTION variable
 
 var path = d3.geoPath().projection(projection);
 var tip = d3.tip().attr('class', 'd3-tip d3-tip-scrolly').style('pointer-events', 'none').offset([0, 0]).html(function (d) {

@@ -43,7 +43,7 @@ svg {
   position: sticky;
   top: 0;
   z-index: 0;
-  height: 80vh;
+  height: 90vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,5 +98,6 @@ svg {
 End scrollytelling 
 
 */
+
 
 /*# sourceMappingURL=/scrollytelling.40cc447b.css.map */

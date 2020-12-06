@@ -238,5 +238,10 @@ body {
       svg {
           margin: 0;
       }
+      
+      .state, .state-label { 
+        pointer-events:none;
+      }
+
 
 /*# sourceMappingURL=/style.251b6741.css.map */

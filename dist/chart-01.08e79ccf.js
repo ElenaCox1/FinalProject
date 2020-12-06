@@ -31610,16 +31610,17 @@ var width = 700 - margin.left - margin.right;
 var svg = d3.select('#chart-1').append('svg').attr('height', height + margin.top + margin.bottom).attr('width', width + margin.left + margin.right).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 var projection = d3.geoAlbersUsa();
 var path = d3.geoPath().projection(projection);
-var colorScale = d3.scaleOrdinal().domain(['Positive', 'Negative', 'Neutral']).range(['pink', 'turquoise', 'white']);
-var tip = d3.tip().attr('class', 'd3-tip d3-tip-scrolly').offset([-10, 0]).html(function (d) {
+var colorScale = d3.scaleOrdinal().domain(['Positive', 'Negative', 'Neutral']).range(['pink', 'turquoise', 'white']); // D3-tip code <--- Andrew edited this section
+
+var tip = d3.tip().attr('class', 'd3-tip') // removed class -> d3-tip-scrolly
+.offset([-10, 0]).html(function (d) {
+  console.log("Tetsing:", d.city);
   return "".concat(d.city, ", ").concat(d.state_id, "\n    <p>").concat(d.Date, "</p>\n    <p>Net approval: ").concat(d.Level, "</p>\n    ");
 });
-console.log(tip);
-svg.call(tip);
-var toolTipElement = d3.select(".d3-tip-scrolly").remove();
-d3.select(".scrollytelling").append(function (d) {
-  return toolTipElement.node();
-});
+svg.call(tip); // let toolTipElement = d3.select(".d3-tip-scrolly").remove()
+// d3.select(".scrollytelling").append(d => toolTipElement.node())
+// ---- END of D3-tip code Section ---- 
+
 Promise.all([d3.json(require('/data/us_states.json')), d3.csv(require('/data/RallyLocations.csv'))]).then(ready).catch(function (err) {
   return console.log('Failed on', err);
 });
@@ -31631,7 +31632,7 @@ function ready(_ref) {
       json = _ref2[0],
       datapoints = _ref2[1];
 
-  console.log(json.objects);
+  // console.log(json.objects)
   var states = topojson.feature(json, json.objects.us_states);
   projection.fitSize([width, height], states);
   var visited = ['FL', 'PA', 'OH', 'WV', 'IN', 'MS', 'MT', 'TN', 'LA', 'NV', 'NC', 'KY', 'MN', 'TX', 'MO', 'IA', 'MI', 'WI', 'AZ', 'NH', 'AL', 'NM', 'SC', 'ND', 'IL', 'GA', 'KS'];
@@ -31641,7 +31642,8 @@ function ready(_ref) {
     } else {
       return '#BEBEBE';
     }
-  });
+  }).style('opacity', 0.5); // Note from Andrew: I changed the opacity of the map to make sure the tool tips weren't hiding behind the map. You can delete this line.
+
   svg.selectAll('.state-label').data(states.features).enter().append('text').attr('class', 'state-label').text(function (d) {
     return d.properties.postal;
   }).attr('transform', function (d) {
@@ -31650,17 +31652,18 @@ function ready(_ref) {
   svg.selectAll('.rallies').data(datapoints).enter().append('circle').attr('class', 'rallies').attr('r', 4).attr('transform', function (d) {
     var coords = projection([d.lng, d.lat]);
     return "translate(".concat(coords, ")");
-  }).style('fill', 'black').on('mouseover', function (d) {
-    tip.show.call(this, d);
-    console.log(d3.event);
-    d3.select('.d3-tip-scrolly').style('top', d3.event.pageY + 10 + 'px');
+  }).style('fill', 'black').style('opacity', 0.8) // Tool Tips
+  .on('mouseover', function (d) {
+    tip.show(d, this);
+    d3.select(this); // Removed class -> '.d3-tip-scrolly', replaced with "this"
+    //.style('top', d3.event.pageY + 10 + 'px')
   }).on('mouseout', tip.hide);
   d3.select('#reset-step').on('stepin', function () {
-    console.log('reset');
+    // console.log('reset')
     svg.selectAll('.rallies').style('fill', 'black');
   });
   d3.select('#pop-step').on('stepin', function () {
-    console.log('popularity is here');
+    // console.log('popularity is here')
     svg.selectAll('.rallies').style('fill', function (d) {
       return colorScale(d.Rating);
     }).raise();
