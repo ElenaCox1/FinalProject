@@ -1,9 +1,7 @@
 import * as d3 from 'd3'
 import * as topojson from 'topojson'
 import d3Tip from 'd3-tip'
-
 d3.tip = d3Tip
-
 const margin = { top: 0, left: 0, right: 0, bottom: 0 }
 const height = 600 - margin.top - margin.bottom
 const width = 700 - margin.left - margin.right
@@ -24,23 +22,26 @@ const colorScale = d3
   .domain(['Positive', 'Negative', 'Neutral'])
   .range(['pink', 'turquoise', 'white'])
 
+// D3-tip code <--- Andrew edited this section
+
 const tip = d3
   .tip()
-  .attr('class', 'd3-tip')
+  .attr('class', 'd3-tip') // removed class -> d3-tip-scrolly
   .offset([-10, 0])
   .html(function (d) {
+    console.log("Tetsing:", d.city)
     return `${d.city}, ${d.state_id}
     <p>${d.Date}</p>
     <p>Net approval: ${d.Level}</p>
     `
   })
-console.log(tip)
 
 svg.call(tip)
 
 // let toolTipElement = d3.select(".d3-tip-scrolly").remove()
-
 // d3.select(".scrollytelling").append(d => toolTipElement.node())
+
+// ---- END of D3-tip code Section ---- 
 
 Promise.all([
   d3.json(require('/data/us_states.json')),
@@ -54,7 +55,7 @@ d3.selectAll('.label_pos').style('background', 'pink')
 d3.selectAll('.label_neg').style('background', 'turquoise')
 
 function ready([json, datapoints]) {
-  console.log(json.objects)
+  // console.log(json.objects)
   const states = topojson.feature(json, json.objects.us_states)
   projection.fitSize([width, height], states)
 
@@ -102,7 +103,7 @@ function ready([json, datapoints]) {
         return '#BEBEBE'
       }
     })
-    .style('opacity', 0.5) 
+    .style('opacity', 0.5) // Note from Andrew: I changed the opacity of the map to make sure the tool tips weren't hiding behind the map. You can delete this line.
 
   svg
     .selectAll('.state-label')
@@ -128,21 +129,25 @@ function ready([json, datapoints]) {
       return `translate(${coords})`
     })
     .style('fill', 'black')
-    // tooltips
+    .style('opacity', 0.8) 
+
+    // Tool Tips
     .on('mouseover', function (d) {
-      tip.show.call(d, this)
-      console.log(d3.event)
-      d3.select(this)
+      tip.show(d, this)
+      d3.select(this) // Removed class -> '.d3-tip-scrolly', replaced with "this"
+      //.style('top', d3.event.pageY + 10 + 'px')
     })
+
     .on('mouseout', tip.hide)
 
+
   d3.select('#reset-step').on('stepin', () => {
-    console.log('reset')
+    // console.log('reset')
     svg.selectAll('.rallies').style('fill', 'black')
   })
 
   d3.select('#pop-step').on('stepin', function() {
-    console.log('popularity is here')
+    // console.log('popularity is here')
     svg
       .selectAll('.rallies')
       .style('fill', d => colorScale(d.Rating))
