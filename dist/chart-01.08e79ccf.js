@@ -31859,7 +31859,7 @@ var path = d3.geoPath().projection(projection);
 var colorScale = d3.scaleOrdinal().domain(['Positive', 'Negative', 'Neutral']).range(['pink', 'turquoise', 'white']); // D3-tip code <--- Andrew edited this section
 
 var tip = d3.tip().attr('class', 'd3-tip') // removed class -> d3-tip-scrolly
-.offset([-10, 0]).html(function (d) {
+.direction('e').html(function (d) {
   console.log("Testing:", d.city);
   return "".concat(d.city, ", ").concat(d.state_id, "\n    <p>").concat(d.Date, "</p>\n    <p>Net approval: ").concat(d.Level, "</p>\n    ");
 });

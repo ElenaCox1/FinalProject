@@ -27,7 +27,7 @@ const colorScale = d3
 const tip = d3
   .tip()
   .attr('class', 'd3-tip') // removed class -> d3-tip-scrolly
-  .offset([-10, 0])
+  .direction('e')
   .html(function (d) {
     console.log("Testing:", d.city)
     return `${d.city}, ${d.state_id}
