@@ -29,7 +29,7 @@ const tip = d3
   .attr('class', 'd3-tip') // removed class -> d3-tip-scrolly
   .offset([-10, 0])
   .html(function (d) {
-    console.log("Tetsing:", d.city)
+    console.log("Testing:", d.city)
     return `${d.city}, ${d.state_id}
     <p>${d.Date}</p>
     <p>Net approval: ${d.Level}</p>
@@ -130,14 +130,12 @@ function ready([json, datapoints]) {
     })
     .style('fill', 'black')
     .style('opacity', 0.8) 
-
     // Tool Tips
     .on('mouseover', function (d) {
       tip.show(d, this)
       d3.select(this) // Removed class -> '.d3-tip-scrolly', replaced with "this"
       //.style('top', d3.event.pageY + 10 + 'px')
     })
-
     .on('mouseout', tip.hide)
 
 
@@ -152,6 +150,12 @@ function ready([json, datapoints]) {
       .selectAll('.rallies')
       .style('fill', d => colorScale(d.Rating))
       .raise()
+      .on('mouseover', function (d) {
+        tip.show(d, this)
+        d3.select(this) // Removed class -> '.d3-tip-scrolly', replaced with "this"
+        //.style('top', d3.event.pageY + 10 + 'px')
+      })
+      .on('mouseout', tip.hide)
   })
 
   function render() {
